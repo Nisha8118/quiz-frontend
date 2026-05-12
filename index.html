@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PDF Quiz</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>📘 PDF Quiz</h1>
+    <p class="muted">Upload a PDF and get AI-generated multiple-choice questions.</p>
+  </header>
+
+  <main>
+    <!-- Upload -->
+    <section id="upload-section" class="card">
+      <h2>1. Upload a PDF</h2>
+      <input type="file" id="pdf-file" accept="application/pdf" />
+      <button id="upload-btn">Upload</button>
+      <p id="upload-status" class="status"></p>
+    </section>
+
+    <!-- Quiz -->
+    <section id="quiz-section" class="card hidden">
+      <div class="row">
+        <h2>2. Quiz</h2>
+        <span id="score-pill" class="pill">Score: 0 / 0</span>
+      </div>
+      <div id="question-box">
+        <p id="question-text">Loading…</p>
+        <div id="options"></div>
+      </div>
+      <div class="actions">
+        <button id="submit-btn" disabled>Submit Answer</button>
+        <button id="next-btn" class="hidden">Next Question</button>
+        <button id="restart-btn" class="ghost">Upload Different PDF</button>
+      </div>
+      <p id="feedback" class="status"></p>
+    </section>
+  </main>
+
+  <footer>
+    <p class="muted">Powered by Google Gemini (free tier).</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
