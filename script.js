@@ -1,89 +1,148 @@
-// ============================================================
-// CONFIG: replace with your Render backend URL (no trailing /).
+// =============================================================
+// CONFIG: paste your Render backend URL here (no trailing slash)
 // Example: "https://quiz-backend-xyz.onrender.com"
-// ============================================================
-const API_URL = "https://quiz-backend-o3ev.onrender.com";
+// =============================================================
+const API_URL = "https://YOUR-RENDER-APP.onrender.com";
 
 // ---- State ----
+let mode = "subject";       // "subject" | "pdf"
 let pdfId = null;
+let askedQuestions = [];
 let currentQuestion = null;
 let selectedAnswer = null;
-let askedQuestions = [];
 let score = 0;
-let total = 0;
+let answered = 0;
+let totalTarget = 10;
 
 // ---- Elements ----
 const $ = (id) => document.getElementById(id);
-const uploadBtn = $("upload-btn");
-const pdfFile = $("pdf-file");
-const uploadStatus = $("upload-status");
-const uploadSection = $("upload-section");
+const tabs = document.querySelectorAll(".tab");
+const subjectPane = $("subject-pane");
+const pdfPane = $("pdf-pane");
+
+const setupSection = $("setup-section");
 const quizSection = $("quiz-section");
+const resultSection = $("result-section");
+
+const subjectSel = $("subject");
+const customSubj = $("custom-subject");
+const difficultySel = $("difficulty");
+const numQuestionsSel = $("num-questions");
+
+const pdfFile = $("pdf-file");
+const uploadBtn = $("upload-btn");
+const uploadStatus = $("upload-status");
+
+const startBtn = $("start-btn");
+const setupStatus = $("setup-status");
+
+const quizTitle = $("quiz-title");
+const scorePill = $("score-pill");
+const progressBar = $("progress-bar");
 const questionText = $("question-text");
 const optionsBox = $("options");
 const submitBtn = $("submit-btn");
 const nextBtn = $("next-btn");
-const restartBtn = $("restart-btn");
+const quitBtn = $("quit-btn");
 const feedback = $("feedback");
-const scorePill = $("score-pill");
+
+const resultScore = $("result-score");
+const resultMsg = $("result-msg");
+const restartBtn = $("restart-btn");
 
 // ---- Helpers ----
 function setStatus(el, msg, kind = "info") {
   el.className = "status " + kind;
   el.textContent = msg;
 }
-
+function show(el) { el.classList.remove("hidden"); }
+function hide(el) { el.classList.add("hidden"); }
 function updateScore() {
-  scorePill.textContent = `Score: ${score} / ${total}`;
+  scorePill.textContent = `Score: ${score} / ${answered}`;
+  progressBar.style.width = `${(answered / totalTarget) * 100}%`;
 }
 
-// ---- Upload ----
+// ---- Tabs ----
+tabs.forEach(t => t.addEventListener("click", () => {
+  tabs.forEach(x => x.classList.remove("active"));
+  t.classList.add("active");
+  mode = t.dataset.mode;
+  if (mode === "subject") { show(subjectPane); hide(pdfPane); }
+  else { hide(subjectPane); show(pdfPane); }
+}));
+
+// ---- Upload PDF ----
 uploadBtn.addEventListener("click", async () => {
   const file = pdfFile.files[0];
   if (!file) return setStatus(uploadStatus, "Please choose a PDF first.", "error");
-
   uploadBtn.disabled = true;
-  setStatus(uploadStatus, "Uploading and reading PDF…", "info");
-
+  setStatus(uploadStatus, "Uploading…", "info");
   try {
     const fd = new FormData();
     fd.append("file", file);
     const res = await fetch(`${API_URL}/upload`, { method: "POST", body: fd });
-    if (!res.ok) {
-      const err = await res.text();
-      throw new Error(err || `HTTP ${res.status}`);
-    }
+    if (!res.ok) throw new Error(await res.text() || `HTTP ${res.status}`);
     const data = await res.json();
     pdfId = data.pdf_id;
-    setStatus(uploadStatus, `✅ Uploaded: ${data.pages} pages, ${data.chars} chars.`, "success");
-    uploadSection.classList.add("hidden");
-    quizSection.classList.remove("hidden");
-    score = 0; total = 0; askedQuestions = [];
-    updateScore();
-    await loadQuestion();
+    setStatus(uploadStatus, `✅ Loaded: ${data.pages} pages, ${data.chars} chars.`, "success");
   } catch (e) {
-    setStatus(uploadStatus, `❌ Upload failed: ${e.message}`, "error");
+    setStatus(uploadStatus, `❌ ${e.message}`, "error");
   } finally {
     uploadBtn.disabled = false;
   }
+});
+
+// ---- Start Quiz ----
+startBtn.addEventListener("click", async () => {
+  if (mode === "pdf" && !pdfId) {
+    return setStatus(setupStatus, "Upload a PDF first.", "error");
+  }
+  // reset
+  askedQuestions = [];
+  score = 0;
+  answered = 0;
+  totalTarget = parseInt(numQuestionsSel.value, 10);
+  setStatus(setupStatus, "", "info");
+
+  const subjectLabel = mode === "subject"
+    ? (customSubj.value.trim() || subjectSel.value)
+    : "PDF Quiz";
+  quizTitle.textContent = `Quiz · ${subjectLabel}`;
+
+  hide(setupSection);
+  hide(resultSection);
+  show(quizSection);
+  updateScore();
+  await loadQuestion();
 });
 
 // ---- Load question ----
 async function loadQuestion() {
   selectedAnswer = null;
   submitBtn.disabled = true;
-  submitBtn.classList.remove("hidden");
-  nextBtn.classList.add("hidden");
+  show(submitBtn);
+  hide(nextBtn);
   feedback.textContent = "";
   feedback.className = "status";
   questionText.textContent = "Loading question…";
   optionsBox.innerHTML = "";
 
+  const body = {
+    mode,
+    asked: askedQuestions,
+    difficulty: difficultySel.value,
+  };
+  if (mode === "pdf") {
+    body.pdf_id = pdfId;
+  } else {
+    body.subject = customSubj.value.trim() || subjectSel.value;
+  }
+
   try {
     const res = await fetch(`${API_URL}/question`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ pdf_id: pdfId, asked: askedQuestions }),
+      body: JSON.stringify(body),
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     currentQuestion = await res.json();
@@ -110,7 +169,7 @@ function renderQuestion() {
 }
 
 function selectOption(key, el) {
-  if (submitBtn.classList.contains("hidden")) return; // already answered
+  if (submitBtn.classList.contains("hidden")) return;
   selectedAnswer = key;
   document.querySelectorAll(".option").forEach((o) => o.classList.remove("selected"));
   el.classList.add("selected");
@@ -128,7 +187,7 @@ submitBtn.addEventListener("click", async () => {
       body: JSON.stringify({ question: currentQuestion, user_answer: selectedAnswer }),
     });
     const data = await res.json();
-    total += 1;
+    answered += 1;
     if (data.correct) score += 1;
     updateScore();
 
@@ -142,12 +201,17 @@ submitBtn.addEventListener("click", async () => {
       feedback,
       data.correct
         ? `✅ Correct! ${data.explanation || ""}`
-        : `❌ Wrong. Correct answer: ${data.correct_answer}. ${data.explanation || ""}`,
+        : `❌ Wrong. Correct: ${data.correct_answer}. ${data.explanation || ""}`,
       data.correct ? "success" : "error"
     );
 
-    submitBtn.classList.add("hidden");
-    nextBtn.classList.remove("hidden");
+    hide(submitBtn);
+    if (answered >= totalTarget) {
+      nextBtn.textContent = "See Results →";
+    } else {
+      nextBtn.textContent = "Next Question →";
+    }
+    show(nextBtn);
   } catch (e) {
     setStatus(feedback, `Error: ${e.message}`, "error");
     submitBtn.disabled = false;
@@ -155,13 +219,34 @@ submitBtn.addEventListener("click", async () => {
 });
 
 // ---- Next ----
-nextBtn.addEventListener("click", loadQuestion);
+nextBtn.addEventListener("click", () => {
+  if (answered >= totalTarget) {
+    finish();
+  } else {
+    loadQuestion();
+  }
+});
+
+// ---- Quit ----
+quitBtn.addEventListener("click", () => {
+  if (confirm("Quit this quiz?")) finish();
+});
+
+function finish() {
+  hide(quizSection);
+  show(resultSection);
+  resultScore.textContent = `${score} / ${answered}`;
+  const pct = answered ? Math.round((score / answered) * 100) : 0;
+  let msg = "";
+  if (pct >= 80) msg = "🌟 Excellent work!";
+  else if (pct >= 60) msg = "👍 Good job — keep practising.";
+  else if (pct >= 40) msg = "🙂 Not bad — try again to improve.";
+  else msg = "📚 Keep studying — you've got this.";
+  resultMsg.textContent = `${msg} (${pct}%)`;
+}
 
 // ---- Restart ----
 restartBtn.addEventListener("click", () => {
-  pdfId = null;
-  pdfFile.value = "";
-  uploadStatus.textContent = "";
-  uploadSection.classList.remove("hidden");
-  quizSection.classList.add("hidden");
+  hide(resultSection);
+  show(setupSection);
 });
