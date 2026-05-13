@@ -2,7 +2,7 @@
 // CONFIG: paste your Render backend URL here (no trailing slash)
 // Example: "https://quiz-backend-xyz.onrender.com"
 // =============================================================
-const API_URL = "https://YOUR-RENDER-APP.onrender.com";
+const API_URL = "https://quiz-backend-o3ev.onrender.com";
 
 // ---- State ----
 let mode = "subject";       // "subject" | "pdf"
