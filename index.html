@@ -3,30 +3,94 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PDF Quiz</title>
+  <title>Adaptive AI Quiz</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
-    <h1>📘 PDF Quiz</h1>
-    <p class="muted">Upload a PDF and get AI-generated multiple-choice questions.</p>
+    <h1>🎓 Adaptive AI Quiz</h1>
+    <p class="muted">Take a quiz on any subject — anytime. Optionally upload a PDF.</p>
   </header>
 
   <main>
-    <!-- Upload -->
-    <section id="upload-section" class="card">
-      <h2>1. Upload a PDF</h2>
-      <input type="file" id="pdf-file" accept="application/pdf" />
-      <button id="upload-btn">Upload</button>
-      <p id="upload-status" class="status"></p>
+    <!-- Setup -->
+    <section id="setup-section" class="card">
+      <h2>1. Choose your quiz</h2>
+
+      <div class="tabs">
+        <button class="tab active" data-mode="subject">📚 By Subject</button>
+        <button class="tab" data-mode="pdf">📄 From PDF</button>
+      </div>
+
+      <!-- Subject mode -->
+      <div id="subject-pane" class="pane">
+        <label>Subject
+          <select id="subject">
+            <option>Mathematics</option>
+            <option>Physics</option>
+            <option>Chemistry</option>
+            <option>Biology</option>
+            <option>Computer Science</option>
+            <option>Operating Systems</option>
+            <option>Data Structures</option>
+            <option>Algorithms</option>
+            <option>Databases (SQL)</option>
+            <option>Networking</option>
+            <option>Artificial Intelligence</option>
+            <option>Machine Learning</option>
+            <option>Deep Learning</option>
+            <option>Natural Language Processing</option>
+            <option>Cloud Computing</option>
+            <option>Cybersecurity</option>
+            <option>History</option>
+            <option>Geography</option>
+            <option>English Grammar</option>
+            <option>General Knowledge</option>
+          </select>
+        </label>
+
+        <label>Custom subject (optional)
+          <input id="custom-subject" type="text" placeholder="e.g. Roman Empire, Quantum Mechanics…" />
+        </label>
+
+        <label>Difficulty
+          <select id="difficulty">
+            <option value="easy">Easy</option>
+            <option value="medium" selected>Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </label>
+
+        <label>Number of questions
+          <select id="num-questions">
+            <option value="5">5</option>
+            <option value="10" selected>10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+          </select>
+        </label>
+      </div>
+
+      <!-- PDF mode -->
+      <div id="pdf-pane" class="pane hidden">
+        <label>Upload a PDF
+          <input type="file" id="pdf-file" accept="application/pdf" />
+        </label>
+        <button id="upload-btn" class="ghost">Upload PDF</button>
+        <p id="upload-status" class="status"></p>
+      </div>
+
+      <button id="start-btn">Start Quiz →</button>
+      <p id="setup-status" class="status"></p>
     </section>
 
     <!-- Quiz -->
     <section id="quiz-section" class="card hidden">
       <div class="row">
-        <h2>2. Quiz</h2>
+        <h2 id="quiz-title">Quiz</h2>
         <span id="score-pill" class="pill">Score: 0 / 0</span>
       </div>
+      <div class="progress"><div id="progress-bar"></div></div>
       <div id="question-box">
         <p id="question-text">Loading…</p>
         <div id="options"></div>
@@ -34,14 +98,22 @@
       <div class="actions">
         <button id="submit-btn" disabled>Submit Answer</button>
         <button id="next-btn" class="hidden">Next Question</button>
-        <button id="restart-btn" class="ghost">Upload Different PDF</button>
+        <button id="quit-btn" class="ghost">Quit</button>
       </div>
       <p id="feedback" class="status"></p>
+    </section>
+
+    <!-- Results -->
+    <section id="result-section" class="card hidden">
+      <h2>🏁 Quiz Complete</h2>
+      <p id="result-score" class="big"></p>
+      <p id="result-msg" class="muted"></p>
+      <button id="restart-btn">Take another quiz</button>
     </section>
   </main>
 
   <footer>
-    <p class="muted">Powered by Google Gemini (free tier).</p>
+    <p class="muted">Powered by Google Gemini · Free tier</p>
   </footer>
 
   <script src="script.js"></script>
