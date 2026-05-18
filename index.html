@@ -60,7 +60,12 @@
             <option value="hard">Hard</option>
           </select>
         </label>
-
+        <label for="timer-select">Time per question:</label>
+        <select id="timer-select">
+        <option value="5">5 seconds</option>
+        <option value="10">10 seconds</option>
+        <option value="30" selected>30 seconds</option>
+        </select>
         <label>Number of questions
           <select id="num-questions">
             <option value="5">5</option>
@@ -70,7 +75,7 @@
           </select>
         </label>
       </div>
-
+      
       <!-- PDF mode -->
       <div id="pdf-pane" class="pane hidden">
         <label>Upload a PDF
@@ -92,15 +97,19 @@
       </div>
       <div class="progress"><div id="progress-bar"></div></div>
       <div id="question-box">
-        <p id="question-text">Loading…</p>
-        <div id="options"></div>
-        <input
-  type="text"
-  id="text-answer"
-  class="hidden"
-  placeholder="Type your answer here..."
-/>
-      </div>
+  <div id="timer-box">
+    ⏳ Time Left: <span id="timer">30</span>s
+  </div>
+  <p id="question-text">Loading…</p>
+  <div id="options"></div>
+  <input
+    type="text"
+    id="text-answer"
+    class="hidden"
+    placeholder="Type your answer here..."
+  />
+</div>
+
       <div class="actions">
         <button id="submit-btn" disabled>Submit Answer</button>
         <button id="next-btn" class="hidden">Next Question</button>
