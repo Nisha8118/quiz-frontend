@@ -11,6 +11,8 @@ let askedQuestions = [];
 let currentQuestion = null;
 let selectedAnswer = null;
 let score = 0;
+let timer = null;
+let timeLeft = 30;
 let answered = 0;
 let totalTarget = 10;
 
@@ -113,12 +115,30 @@ startBtn.addEventListener("click", async () => {
   hide(resultSection);
   show(quizSection);
   updateScore();
+  function startTimer() {
+  clearInterval(timer);
+  const timerEl = document.getElementById("timer");
+  timerEl.textContent = timeLeft;
+  timer = setInterval(() => {
+    timeLeft--;
+    timerEl.textContent = timeLeft;
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      // Auto submit
+      if (!submitBtn.disabled) {
+        submitBtn.click();
+      }
+    }
+  }, 1000);
+}
   await loadQuestion();
 });
 
 // ---- Load question ----
 async function loadQuestion() {
   selectedAnswer = null;
+  timeLeft = parseInt(document.getElementById("timer-select").value);
+  startTimer();
   submitBtn.disabled = true;
   show(submitBtn);
   hide(nextBtn);
@@ -137,7 +157,6 @@ async function loadQuestion() {
   } else {
     body.subject = customSubj.value.trim() || subjectSel.value;
   }
-
   try {
     const res = await fetch(`${API_URL}/question`, {
       method: "POST",
@@ -195,6 +214,7 @@ function selectOption(key, el) {
 // ---- Submit ----
 submitBtn.addEventListener("click", async () => {
   if (!selectedAnswer) return;
+  clearInterval(timer);
   submitBtn.disabled = true;
   try {
     const res = await fetch(`${API_URL}/score`, {
@@ -206,7 +226,6 @@ submitBtn.addEventListener("click", async () => {
     answered += 1;
     if (data.correct) score += 1;
     updateScore();
-
     if (currentQuestion.type === "mcq") {
   document.querySelectorAll(".option").forEach((o) => {
     const k = o.dataset.key;
@@ -255,6 +274,7 @@ quitBtn.addEventListener("click", () => {
 });
 
 function finish() {
+  clearInterval(timer);
   hide(quizSection);
   show(resultSection);
   resultScore.textContent = `${score} / ${answered}`;
