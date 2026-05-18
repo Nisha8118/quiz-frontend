@@ -49,9 +49,14 @@
           </select>
         </label>
 
-        <label>Custom subject (optional)
-          <input id="custom-subject" type="text" placeholder="e.g. Roman Empire, Quantum Mechanics…" />
-        </label>
+        <label for="question-type">Question Type:</label>
+        <select id="question-type">
+        <option value="mixed">Mixed</option>
+        <option value="mcq">MCQ</option>
+        <option value="fill_blank">Fill in the Blank</option>
+        <option value="one_word">One Word Answer</option>
+        <option value="analogy">Analogy</option>
+        </select>
 
         <label>Difficulty
           <select id="difficulty">
