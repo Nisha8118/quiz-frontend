@@ -163,10 +163,11 @@ async function loadQuestion() {
   optionsBox.innerHTML = "";
 
   const body = {
-    mode,
-    asked: askedQuestions,
-    difficulty: difficultySel.value,
-  };
+  mode,
+  asked: askedQuestions,
+  difficulty: difficultySel.value,
+  question_type: document.getElementById("question-type").value,
+};
   if (mode === "pdf") {
     body.pdf_id = pdfId;
   } else {
