@@ -63,7 +63,22 @@ function updateScore() {
   scorePill.textContent = `Score: ${score} / ${answered}`;
   progressBar.style.width = `${(answered / totalTarget) * 100}%`;
 }
+function startTimer() {
+  clearInterval(timer);
+  const timerEl = document.getElementById("timer");
+  timerEl.textContent = timeLeft;
+  timer = setInterval(() => {
+    timeLeft--;
+    timerEl.textContent = timeLeft;
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      if (!submitBtn.disabled) {
+        submitBtn.click();
+      }
+    }
 
+  }, 1000);
+}
 // ---- Tabs ----
 tabs.forEach(t => t.addEventListener("click", () => {
   tabs.forEach(x => x.classList.remove("active"));
