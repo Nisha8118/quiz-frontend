@@ -157,15 +157,31 @@ async function loadQuestion() {
 function renderQuestion() {
   questionText.textContent = currentQuestion.question;
   optionsBox.innerHTML = "";
-  ["A", "B", "C", "D"].forEach((key) => {
-    const text = currentQuestion.options[key] ?? "";
-    const div = document.createElement("div");
-    div.className = "option";
-    div.dataset.key = key;
-    div.innerHTML = `<span class="label">${key}</span><span>${text}</span>`;
-    div.addEventListener("click", () => selectOption(key, div));
-    optionsBox.appendChild(div);
-  });
+  const textInput = document.getElementById("text-answer");
+  textInput.classList.add("hidden");
+  if (currentQuestion.type === "mcq") {
+    ["A", "B", "C", "D"].forEach((key) => {
+      const text = currentQuestion.options[key] ?? "";
+      const div = document.createElement("div");
+      div.className = "option";
+      div.dataset.key = key;
+      div.innerHTML = `
+        <span class="label">${key}</span>
+        <span>${text}</span>
+      `;
+      div.addEventListener("click", () => selectOption(key, div));
+      optionsBox.appendChild(div);
+    });
+  }
+  else {
+    textInput.classList.remove("hidden");
+    textInput.value = "";
+    textInput.focus();
+    textInput.oninput = () => {
+      selectedAnswer = textInput.value.trim();
+      submitBtn.disabled = selectedAnswer.length === 0;
+    };
+  }
 }
 
 function selectOption(key, el) {
@@ -191,11 +207,17 @@ submitBtn.addEventListener("click", async () => {
     if (data.correct) score += 1;
     updateScore();
 
-    document.querySelectorAll(".option").forEach((o) => {
-      const k = o.dataset.key;
-      if (k === data.correct_answer) o.classList.add("correct");
-      else if (k === selectedAnswer) o.classList.add("wrong");
-    });
+    if (currentQuestion.type === "mcq") {
+  document.querySelectorAll(".option").forEach((o) => {
+    const k = o.dataset.key;
+    if (k === data.correct_answer) {
+      o.classList.add("correct");
+    }
+    else if (k === selectedAnswer) {
+      o.classList.add("wrong");
+    }
+  });
+}
 
     setStatus(
       feedback,
