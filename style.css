@@ -89,3 +89,22 @@ button.ghost {
 .status.info { color: #93c5fd; }
 
 .big { font-size: 48px; font-weight: 700; text-align: center; margin: 16px 0; }
+#timer-box {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #ff9800;
+}
+
+#text-answer {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.hidden {
+  display: none;
+}
