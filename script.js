@@ -144,8 +144,6 @@ timeLimit = parseInt(timerSelect.value);
 // ---- Load question ----
 async function loadQuestion() {
   selectedAnswer = null;
-  timeLeft = parseInt(document.getElementById("timer-select").value);
-  startTimer();
   submitBtn.disabled = true;
   show(submitBtn);
   hide(nextBtn);
@@ -175,6 +173,8 @@ async function loadQuestion() {
     currentQuestion = await res.json();
     askedQuestions.push(currentQuestion.question);
     renderQuestion();
+    timeLeft = parseInt(document.getElementById("timer-select").value);
+    startTimer();
   } catch (e) {
     questionText.textContent = "Failed to load question.";
     setStatus(feedback, e.message, "error");
