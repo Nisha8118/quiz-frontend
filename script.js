@@ -15,13 +15,19 @@ let timer = null;
 let timeLeft = 30;
 let answered = 0;
 let totalTarget = 10;
+let questionType = "mixed";
+let timeLimit = 30;
+let timerInterval = null;
 
 // ---- Elements ----
 const $ = (id) => document.getElementById(id);
 const tabs = document.querySelectorAll(".tab");
 const subjectPane = $("subject-pane");
 const pdfPane = $("pdf-pane");
-
+const questionTypeSel = $("question-type");
+const timerSelect = $("timer-select");
+const timerEl = $("timer");
+const textAnswer = $("text-answer");
 const setupSection = $("setup-section");
 const quizSection = $("quiz-section");
 const resultSection = $("result-section");
@@ -111,6 +117,8 @@ uploadBtn.addEventListener("click", async () => {
 
 // ---- Start Quiz ----
 startBtn.addEventListener("click", async () => {
+  questionType = questionTypeSel.value;
+timeLimit = parseInt(timerSelect.value);
   if (mode === "pdf" && !pdfId) {
     return setStatus(setupStatus, "Upload a PDF first.", "error");
   }
@@ -166,7 +174,7 @@ async function loadQuestion() {
   mode,
   asked: askedQuestions,
   difficulty: difficultySel.value,
-  question_type: document.getElementById("question-type").value,
+  question_type: questionType,
 };
   if (mode === "pdf") {
     body.pdf_id = pdfId;
