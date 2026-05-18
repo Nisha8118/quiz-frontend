@@ -33,7 +33,7 @@ const quizSection = $("quiz-section");
 const resultSection = $("result-section");
 
 const subjectSel = $("subject");
-const customSubj = $("custom-subject");
+const customSubj = { value: "" };
 const difficultySel = $("difficulty");
 const numQuestionsSel = $("num-questions");
 
@@ -138,22 +138,6 @@ timeLimit = parseInt(timerSelect.value);
   hide(resultSection);
   show(quizSection);
   updateScore();
-  function startTimer() {
-  clearInterval(timer);
-  const timerEl = document.getElementById("timer");
-  timerEl.textContent = timeLeft;
-  timer = setInterval(() => {
-    timeLeft--;
-    timerEl.textContent = timeLeft;
-    if (timeLeft <= 0) {
-      clearInterval(timer);
-      // Auto submit
-      if (!submitBtn.disabled) {
-        submitBtn.click();
-      }
-    }
-  }, 1000);
-}
   await loadQuestion();
 });
 
