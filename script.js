@@ -511,13 +511,18 @@ else{
   "Focus on the weak areas identified by AI before attempting higher difficulty questions.";
 
 }
-  const pct = answered ? Math.round((score / answered) * 100) : 0;
   let msg = "";
-  if (pct >= 80) msg = "🌟 Excellent work!";
-  else if (pct >= 60) msg = "👍 Good job — keep practising.";
-  else if (pct >= 40) msg = "🙂 Not bad — try again to improve.";
-  else msg = "📚 Keep studying — you've got this.";
-  resultMsg.textContent = `${msg} (${pct}%)`;
+
+if (pct >= 80)
+  msg = "🌟 Excellent work!";
+else if (pct >= 60)
+  msg = "👍 Good job — keep practising.";
+else if (pct >= 40)
+  msg = "🙂 Not bad — try again to improve.";
+else
+  msg = "📚 Keep studying — you've got this.";
+
+resultMsg.textContent = `${msg} (${pct}%)`;
   const history =
 JSON.parse(
 localStorage.getItem(
@@ -551,6 +556,7 @@ localStorage.setItem(
 "quizHistory",
 JSON.stringify(history)
 );
+  loadHistory();
 }
 // ---- Restart ----
 restartBtn.addEventListener("click", () => {
@@ -618,3 +624,4 @@ ${item.date}
 .join("");
 
 }
+loadHistory();
