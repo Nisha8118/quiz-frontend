@@ -44,6 +44,8 @@ const feedback = $("feedback");
 const resultScore = $("result-score");
 const resultMsg = $("result-msg");
 const restartBtn = $("restart-btn");
+const questionCounter = $("question-counter");
+const difficultyBadge = $("difficulty-badge");
 const exploreBtn = $("explore-btn");
 // ---- Helpers ----
 function setStatus(el, msg, kind = "info") {
@@ -156,6 +158,11 @@ async function loadQuestion() {
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     currentQuestion = await res.json();
+    questionCounter.textContent =
+`Question ${answered + 1} / ${totalTarget}`;
+
+difficultyBadge.textContent =
+difficultySel.value.toUpperCase();
     askedQuestions.push(currentQuestion.question);
     renderQuestion();
     timeLeft = parseInt(document.getElementById("timer-select").value);
