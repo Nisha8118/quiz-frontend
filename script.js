@@ -171,6 +171,7 @@ async function loadQuestion() {
 
 difficultyBadge.textContent =
 difficultySel.value.toUpperCase();
+    
     askedQuestions.push(currentQuestion.question);
     renderQuestion();
     timeLeft = parseInt(document.getElementById("timer-select").value);
@@ -266,11 +267,14 @@ else{
       difficultySel.value = "hard";
   }
 
+  difficultyBadge.textContent =
+  difficultySel.value.toUpperCase();
+
   correctStreak = 0;
 
   setStatus(
     feedback,
-    "🚀 Difficulty Increased!",
+    "🚀 Great performance! AI increased difficulty to HARD.",
     "success"
   );
 }
@@ -284,15 +288,40 @@ if(wrongStreak >= 2){
       difficultySel.value = "easy";
   }
 
+  difficultyBadge.textContent =
+  difficultySel.value.toUpperCase();
+
   wrongStreak = 0;
 
   setStatus(
     feedback,
-    "📚 Difficulty Reduced for Better Learning",
+    "📚 AI adjusted difficulty to MEDIUM to improve learning.",
     "info"
   );
 }
     updateScore();
+    let accuracy = score / answered;
+
+let insight = "";
+
+if(accuracy >= 0.8){
+
+    insight =
+    "🧠 Strong understanding detected.";
+
+}
+else if(accuracy >= 0.5){
+
+    insight =
+    "📈 Improving steadily.";
+
+}
+else{
+
+    insight =
+    "📚 Focus on fundamentals.";
+
+}
     if (currentQuestion.type === "mcq") {
   document.querySelectorAll(".option").forEach((o) => {
     const k = o.dataset.key;
@@ -305,12 +334,24 @@ if(wrongStreak >= 2){
   });
 }
     setStatus(
-      feedback,
-      data.correct
-        ? `✅ Correct! ${data.explanation || ""}`
-        : `❌ Wrong. Correct: ${data.correct_answer}. ${data.explanation || ""}`,
-      data.correct ? "success" : "error"
-    );
+  feedback,
+
+  data.correct
+
+  ? `✅ Correct!
+     ${data.explanation || ""}
+
+     ${insight}`
+
+  : `❌ Wrong.
+     Correct: ${data.correct_answer}
+
+     ${data.explanation || ""}
+
+     ${insight}`,
+
+  data.correct ? "success" : "error"
+);
     hide(submitBtn);
     if (answered >= totalTarget) {
       nextBtn.textContent = "See Results →";
