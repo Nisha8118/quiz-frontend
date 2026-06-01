@@ -214,11 +214,53 @@
 
     <!-- Results -->
     <section id="result-section" class="card hidden">
-      <h2>🏁 Quiz Complete</h2>
-      <p id="result-score" class="big"></p>
-      <p id="result-msg" class="muted"></p>
-      <button id="restart-btn">Take another quiz</button>
-    </section>
+
+  <h2>📊 Performance Report</h2>
+
+  <div class="analytics-card">
+
+    <div class="accuracy-circle">
+      <span id="accuracy-percent">0%</span>
+    </div>
+
+    <h3 id="result-score"></h3>
+
+    <div class="analytics-grid">
+
+      <div class="analytic-box">
+        <h4>Correct</h4>
+        <p id="correct-count">0</p>
+      </div>
+
+      <div class="analytic-box">
+        <h4>Wrong</h4>
+        <p id="wrong-count">0</p>
+      </div>
+
+      <div class="analytic-box">
+        <h4>Difficulty</h4>
+        <p id="difficulty-result">Medium</p>
+      </div>
+
+      <div class="analytic-box">
+        <h4>Questions</h4>
+        <p id="questions-total">0</p>
+      </div>
+
+    </div>
+
+    <div class="recommendation">
+      <h3>🎯 Recommendation</h3>
+      <p id="recommendation-text"></p>
+    </div>
+
+  </div>
+
+  <button id="restart-btn">
+    Take Another Quiz
+  </button>
+
+</section>
   </main>
 
   <footer>
