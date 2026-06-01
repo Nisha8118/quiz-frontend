@@ -50,21 +50,34 @@ select, input[type="text"], input[type="file"] {
 }
 
 button {
-  transition:all .3s ease;
-  button:hover{
-  transform:translateY(-2px);
-}
-  background: #3b82f6; color: white; border: none;
-  padding: 12px 18px; border-radius: 10px;
-  font-size: 15px; font-weight: 600; cursor: pointer;
-  margin-top: 12px; transition: opacity .15s;
-}
-button:hover:not(:disabled) { opacity: .9; }
-button:disabled { opacity: .5; cursor: not-allowed; }
-button.ghost {
-  background: transparent; color: #cbd5e1; border: 1px solid #334155;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 12px;
+
+  transition: all .3s ease;
 }
 
+button:hover:not(:disabled) {
+  opacity: .9;
+  transform: translateY(-2px);
+}
+
+button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+button.ghost {
+  background: transparent;
+  color: #cbd5e1;
+  border: 1px solid #334155;
+}
 .row { display: flex; justify-content: space-between; align-items: center; }
 .pill {
   background: #0f172a; padding: 6px 12px;
