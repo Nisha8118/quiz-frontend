@@ -54,6 +54,8 @@ const wrongCount = $("wrong-count");
 const difficultyResult = $("difficulty-result");
 const questionsTotal = $("questions-total");
 const recommendationText = $("recommendation-text");
+const weakTopics =$("weak-topics");
+const strongTopics =$("strong-topics");
 const questionCounter = $("question-counter");
 const difficultyBadge = $("difficulty-badge");
 const exploreBtn = $("explore-btn");
@@ -383,17 +385,42 @@ difficultyResult.textContent =
 difficultySel.value.toUpperCase();
 questionsTotal.textContent =
 answered;
-  if (pct >= 80) {
+  const weakPreview =
+weakQuestions
+.slice(0,3)
+.map(q => `• ${q}`)
+.join("<br>");
+
+const strongPreview =
+strongQuestions
+.slice(0,3)
+.map(q => `• ${q}`)
+.join("<br>");
+
+weakTopics.innerHTML =
+`<h4>❌ Weak Areas</h4>
+${weakPreview || "None"}`;
+
+strongTopics.innerHTML =
+`<h4>✅ Strong Areas</h4>
+${strongPreview || "None"}`;
+  if (pct >= 80){
+
   recommendationText.textContent =
-  "Excellent performance. Try Hard difficulty next.";
+  "Excellent performance. Move to HARD difficulty and advanced topics.";
+
 }
-else if (pct >= 60) {
+else if (pct >= 60){
+
   recommendationText.textContent =
-  "Good work. Revise weak topics and retry.";
+  "Good performance. Revise the weak areas shown above and retry.";
+
 }
-else {
+else{
+
   recommendationText.textContent =
-  "Practice more and strengthen fundamentals.";
+  "Focus on the weak areas identified by AI before attempting higher difficulty questions.";
+
 }
   const pct = answered ? Math.round((score / answered) * 100) : 0;
   let msg = "";
