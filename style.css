@@ -332,3 +332,45 @@ button.ghost {
 
   border-color:#3b82f6;
 }
+/* ==========================
+   QUIZ HEADER
+========================== */
+
+.quiz-meta{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  margin-bottom:20px;
+}
+
+#question-counter{
+
+  background:#0f172a;
+
+  padding:10px 15px;
+
+  border-radius:12px;
+
+  border:1px solid #334155;
+
+  font-weight:600;
+}
+
+#difficulty-badge{
+
+  background:linear-gradient(
+    135deg,
+    #2563eb,
+    #7c3aed
+  );
+
+  padding:10px 16px;
+
+  border-radius:999px;
+
+  font-weight:bold;
+}
