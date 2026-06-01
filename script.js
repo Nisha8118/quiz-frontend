@@ -390,6 +390,11 @@ function finish() {
 : 0;
 accuracyPercent.textContent =
 `${pct}%`;
+  document
+.getElementById(
+"accuracy-fill"
+).style.width =
+pct + "%";
 correctCount.textContent =
 score;
 wrongCount.textContent =
