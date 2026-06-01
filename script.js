@@ -5,6 +5,8 @@ let askedQuestions = [];
 let currentQuestion = null;
 let selectedAnswer = null;
 let score = 0;
+let correctStreak = 0;
+let wrongStreak = 0;
 let timer = null;
 let timeLeft = 30;
 let answered = 0;
@@ -241,7 +243,55 @@ submitBtn.addEventListener("click", async () => {
     });
     const data = await res.json();
     answered += 1;
-    if (data.correct) score += 1;
+    if (data.correct){
+
+  score += 1;
+
+  correctStreak++;
+  wrongStreak = 0;
+
+}
+else{
+
+  wrongStreak++;
+  correctStreak = 0;
+
+}
+    if(correctStreak >= 3){
+
+  if(difficultySel.value === "easy"){
+      difficultySel.value = "medium";
+  }
+  else if(difficultySel.value === "medium"){
+      difficultySel.value = "hard";
+  }
+
+  correctStreak = 0;
+
+  setStatus(
+    feedback,
+    "🚀 Difficulty Increased!",
+    "success"
+  );
+}
+
+if(wrongStreak >= 2){
+
+  if(difficultySel.value === "hard"){
+      difficultySel.value = "medium";
+  }
+  else if(difficultySel.value === "medium"){
+      difficultySel.value = "easy";
+  }
+
+  wrongStreak = 0;
+
+  setStatus(
+    feedback,
+    "📚 Difficulty Reduced for Better Learning",
+    "info"
+  );
+}
     updateScore();
     if (currentQuestion.type === "mcq") {
   document.querySelectorAll(".option").forEach((o) => {
