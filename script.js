@@ -5,6 +5,8 @@ let askedQuestions = [];
 let currentQuestion = null;
 let selectedAnswer = null;
 let score = 0;
+let weakQuestions = [];
+let strongQuestions = [];
 let correctStreak = 0;
 let wrongStreak = 0;
 let timer = null;
@@ -121,6 +123,8 @@ timeLimit = parseInt(timerSelect.value);
   askedQuestions = [];
   score = 0;
   answered = 0;
+  weakQuestions = [];
+strongQuestions = [];
   totalTarget = parseInt(numQuestionsSel.value, 10);
   setStatus(setupStatus, "", "info");
 
@@ -244,55 +248,47 @@ submitBtn.addEventListener("click", async () => {
     });
     const data = await res.json();
     answered += 1;
-    if (data.correct){
-
+if (data.correct){
   score += 1;
-
+  strongQuestions.push(
+    currentQuestion.question
+  );
   correctStreak++;
   wrongStreak = 0;
-
 }
 else{
-
+  weakQuestions.push(
+    currentQuestion.question
+  );
   wrongStreak++;
   correctStreak = 0;
-
 }
     if(correctStreak >= 3){
-
   if(difficultySel.value === "easy"){
       difficultySel.value = "medium";
   }
   else if(difficultySel.value === "medium"){
       difficultySel.value = "hard";
   }
-
   difficultyBadge.textContent =
   difficultySel.value.toUpperCase();
-
   correctStreak = 0;
-
   setStatus(
     feedback,
     "🚀 Great performance! AI increased difficulty to HARD.",
     "success"
   );
 }
-
 if(wrongStreak >= 2){
-
   if(difficultySel.value === "hard"){
       difficultySel.value = "medium";
   }
   else if(difficultySel.value === "medium"){
       difficultySel.value = "easy";
   }
-
   difficultyBadge.textContent =
   difficultySel.value.toUpperCase();
-
   wrongStreak = 0;
-
   setStatus(
     feedback,
     "📚 AI adjusted difficulty to MEDIUM to improve learning.",
@@ -301,26 +297,18 @@ if(wrongStreak >= 2){
 }
     updateScore();
     let accuracy = score / answered;
-
 let insight = "";
-
 if(accuracy >= 0.8){
-
     insight =
     "🧠 Strong understanding detected.";
-
 }
 else if(accuracy >= 0.5){
-
     insight =
     "📈 Improving steadily.";
-
 }
 else{
-
     insight =
     "📚 Focus on fundamentals.";
-
 }
     if (currentQuestion.type === "mcq") {
   document.querySelectorAll(".option").forEach((o) => {
