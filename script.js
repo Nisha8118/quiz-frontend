@@ -174,7 +174,18 @@ difficultySel.value.toUpperCase();
 }
 
 function renderQuestion() {
-  questionText.textContent = currentQuestion.question;
+  questionText.classList.remove(
+  "question-animation"
+);
+
+void questionText.offsetWidth;
+
+questionText.classList.add(
+  "question-animation"
+);
+
+questionText.textContent =
+currentQuestion.question;
   optionsBox.innerHTML = "";
   const textInput = document.getElementById("text-answer");
   textInput.classList.add("hidden");
