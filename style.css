@@ -42,7 +42,32 @@ footer { text-align: center; padding: 24px; font-size: 13px; }
 
   animation:slideQuestion .4s ease;
 }
+.topic-analysis{
 
+  margin-top:25px;
+
+  padding:20px;
+
+  border-radius:15px;
+
+  background:#0f172a;
+
+  border:1px solid #334155;
+}
+
+#weak-topics{
+
+  margin-top:15px;
+
+  color:#f87171;
+}
+
+#strong-topics{
+
+  margin-top:15px;
+
+  color:#34d399;
+}
 @keyframes slideQuestion{
 
   from{
