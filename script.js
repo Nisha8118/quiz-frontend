@@ -1,11 +1,5 @@
-// =============================================================
-// CONFIG: paste your Render backend URL here (no trailing slash)
-// Example: "https://quiz-backend-xyz.onrender.com"
-// =============================================================
 const API_URL = "https://quiz-backend-o3ev.onrender.com";
-
-// ---- State ----
-let mode = "subject";       // "subject" | "pdf"
+let mode = "subject";       
 let pdfId = null;
 let askedQuestions = [];
 let currentQuestion = null;
@@ -18,8 +12,6 @@ let totalTarget = 10;
 let questionType = "mixed";
 let timeLimit = 30;
 let timerInterval = null;
-
-// ---- Elements ----
 const $ = (id) => document.getElementById(id);
 const tabs = document.querySelectorAll(".tab");
 const subjectPane = $("subject-pane");
@@ -31,19 +23,15 @@ const textAnswer = $("text-answer");
 const setupSection = $("setup-section");
 const quizSection = $("quiz-section");
 const resultSection = $("result-section");
-
 const subjectSel = $("subject");
 const customSubj = { value: "" };
 const difficultySel = $("difficulty");
 const numQuestionsSel = $("num-questions");
-
 const pdfFile = $("pdf-file");
 const uploadBtn = $("upload-btn");
 const uploadStatus = $("upload-status");
-
 const startBtn = $("start-btn");
 const setupStatus = $("setup-status");
-
 const quizTitle = $("quiz-title");
 const scorePill = $("score-pill");
 const progressBar = $("progress-bar");
@@ -53,11 +41,10 @@ const submitBtn = $("submit-btn");
 const nextBtn = $("next-btn");
 const quitBtn = $("quit-btn");
 const feedback = $("feedback");
-
 const resultScore = $("result-score");
 const resultMsg = $("result-msg");
 const restartBtn = $("restart-btn");
-
+const exploreBtn = $("explore-btn");
 // ---- Helpers ----
 function setStatus(el, msg, kind = "info") {
   el.className = "status " + kind;
@@ -82,7 +69,6 @@ function startTimer() {
         submitBtn.click();
       }
     }
-
   }, 1000);
 }
 // ---- Tabs ----
@@ -93,7 +79,6 @@ tabs.forEach(t => t.addEventListener("click", () => {
   if (mode === "subject") { show(subjectPane); hide(pdfPane); }
   else { hide(subjectPane); show(pdfPane); }
 }));
-
 // ---- Upload PDF ----
 uploadBtn.addEventListener("click", async () => {
   const file = pdfFile.files[0];
@@ -299,4 +284,9 @@ function finish() {
 restartBtn.addEventListener("click", () => {
   hide(resultSection);
   show(setupSection);
+});
+exploreBtn.addEventListener("click", () => {
+  setupSection.scrollIntoView({
+    behavior: "smooth"
+  });
 });
