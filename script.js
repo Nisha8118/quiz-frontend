@@ -55,6 +55,14 @@ const wrongCount = $("wrong-count");
 const difficultyResult = $("difficulty-result");
 const questionsTotal = $("questions-total");
 const recommendationText = $("recommendation-text");
+const avgTime =
+$("avg-time");
+const fastestTime =
+$("fastest-time");
+const slowestTime =
+$("slowest-time");
+const performanceGrade =
+$("performance-grade");
 const weakTopics =$("weak-topics");
 const strongTopics =$("strong-topics");
 const questionCounter = $("question-counter");
