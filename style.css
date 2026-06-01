@@ -561,6 +561,29 @@ button.ghost {
   #10b981,
   #3b82f6
   );
+#history-list{
 
+  display:flex;
+
+  flex-direction:column;
+
+  gap:15px;
+}
+
+.history-item{
+
+  background:#0f172a;
+
+  border:1px solid #334155;
+
+  border-radius:12px;
+
+  padding:15px;
+}
+
+.history-item strong{
+
+  color:#60a5fa;
+}
   transition:1s;
 }
