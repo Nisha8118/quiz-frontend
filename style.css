@@ -214,3 +214,103 @@ button.ghost {
 
     cursor:pointer;
 }
+/* ==========================
+   STATS SECTION
+========================== */
+
+.stats-section{
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(auto-fit,minmax(180px,1fr));
+
+  gap:20px;
+
+  margin-bottom:25px;
+}
+
+.stat-card{
+
+  background:rgba(255,255,255,.08);
+
+  backdrop-filter:blur(15px);
+
+  border-radius:18px;
+
+  padding:25px;
+
+  text-align:center;
+
+  border:1px solid rgba(255,255,255,.1);
+
+  transition:.3s;
+}
+
+.stat-card:hover{
+
+  transform:translateY(-6px);
+
+  box-shadow:
+  0 10px 25px rgba(59,130,246,.25);
+}
+
+.stat-card h3{
+
+  font-size:32px;
+
+  margin-bottom:10px;
+
+  color:#60a5fa;
+}
+
+.stat-card p{
+
+  color:#cbd5e1;
+}
+
+/* ==========================
+   FEATURES
+========================== */
+
+.features-section{
+
+  margin-bottom:25px;
+}
+
+.features-section h2{
+
+  text-align:center;
+
+  margin-bottom:20px;
+}
+
+.feature-grid{
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(auto-fit,minmax(250px,1fr));
+
+  gap:15px;
+}
+
+.feature-item{
+
+  background:#0f172a;
+
+  padding:15px;
+
+  border-radius:12px;
+
+  border:1px solid #334155;
+
+  transition:.3s;
+}
+
+.feature-item:hover{
+
+  transform:scale(1.03);
+
+  border-color:#3b82f6;
+}
