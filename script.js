@@ -562,3 +562,59 @@ exploreBtn.addEventListener("click", () => {
     behavior: "smooth"
   });
 });
+function loadHistory(){
+
+const historyList =
+document.getElementById(
+"history-list"
+);
+
+const history =
+JSON.parse(
+localStorage.getItem(
+"quizHistory"
+) || "[]"
+);
+
+if(history.length === 0){
+
+historyList.innerHTML =
+"No quiz attempts yet.";
+
+return;
+}
+
+historyList.innerHTML =
+history
+.slice(0,10)
+.map(item => `
+
+<div class="history-item">
+
+<strong>${item.subject}</strong>
+
+<br>
+
+Score:
+${item.score}/${item.answered}
+
+<br>
+
+Accuracy:
+${item.accuracy}%
+
+<br>
+
+Difficulty:
+${item.difficulty}
+
+<br>
+
+${item.date}
+
+</div>
+
+`)
+.join("");
+
+}
