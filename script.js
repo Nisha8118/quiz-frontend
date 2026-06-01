@@ -385,8 +385,7 @@ function finish() {
   hide(quizSection);
   show(resultSection);
   resultScore.textContent = `${score} / ${answered}`;
-  const pct =
-answered
+  const pct =answered
 ? Math.round((score / answered) * 100)
 : 0;
 accuracyPercent.textContent =
@@ -399,6 +398,77 @@ difficultyResult.textContent =
 difficultySel.value.toUpperCase();
 questionsTotal.textContent =
 answered;
+  const totalTime =
+questionTimes.reduce(
+(a,b)=>a+b,
+0
+);
+
+const averageTime =
+questionTimes.length
+? Math.round(
+totalTime /
+questionTimes.length
+)
+: 0;
+
+const fastest =
+questionTimes.length
+? Math.min(...questionTimes)
+: 0;
+
+const slowest =
+questionTimes.length
+? Math.max(...questionTimes)
+: 0;
+
+avgTime.textContent =
+averageTime + "s";
+
+fastestTime.textContent =
+fastest + "s";
+
+slowestTime.textContent =
+slowest + "s";
+  let grade = "F";
+
+if(pct >= 90){
+ grade = "A+";
+}
+else if(pct >= 80){
+ grade = "A";
+}
+else if(pct >= 70){
+ grade = "B";
+}
+else if(pct >= 60){
+ grade = "C";
+}
+else if(pct >= 50){
+ grade = "D";
+}
+
+performanceGrade.textContent =
+grade;
+
+if(
+grade === "A+" ||
+grade === "A"
+){
+ performanceGrade.style.color =
+ "#10b981";
+}
+else if(
+grade === "B" ||
+grade === "C"
+){
+ performanceGrade.style.color =
+ "#f59e0b";
+}
+else{
+ performanceGrade.style.color =
+ "#ef4444";
+}
   const weakPreview =
 weakQuestions
 .slice(0,3)
