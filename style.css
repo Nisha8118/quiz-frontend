@@ -108,3 +108,101 @@ button.ghost {
 .hidden {
   display: none;
 }
+/* ==========================
+   HERO SECTION
+========================== */
+
+.hero{
+    min-height:60vh;
+
+    background:linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed,
+        #06b6d4
+    );
+
+    background-size:300% 300%;
+
+    animation:gradientMove 10s ease infinite;
+
+    position:relative;
+}
+
+@keyframes gradientMove{
+    0%{
+        background-position:0% 50%;
+    }
+
+    50%{
+        background-position:100% 50%;
+    }
+
+    100%{
+        background-position:0% 50%;
+    }
+}
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:20px 40px;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:bold;
+}
+
+.nav-links{
+    display:flex;
+    gap:25px;
+}
+
+.nav-links a{
+    color:white;
+    text-decoration:none;
+    font-weight:500;
+}
+
+.hero-content{
+    text-align:center;
+
+    max-width:700px;
+
+    margin:auto;
+
+    padding-top:100px;
+}
+
+.hero-content h1{
+    font-size:56px;
+    margin-bottom:20px;
+}
+
+.hero-content p{
+    font-size:20px;
+    line-height:1.6;
+
+    margin-bottom:30px;
+}
+
+#explore-btn{
+    font-size:18px;
+
+    padding:15px 30px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:white;
+
+    color:#2563eb;
+
+    font-weight:bold;
+
+    cursor:pointer;
+}
