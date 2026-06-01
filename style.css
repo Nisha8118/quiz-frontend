@@ -38,7 +38,23 @@ footer { text-align: center; padding: 24px; font-size: 13px; }
   cursor: pointer; font-size: 14px;
 }
 .tab.active { background: #3b82f6; color: white; border-color: #3b82f6; }
+.question-animation{
 
+  animation:slideQuestion .4s ease;
+}
+
+@keyframes slideQuestion{
+
+  from{
+    opacity:0;
+    transform:translateX(25px);
+  }
+
+  to{
+    opacity:1;
+    transform:translateX(0);
+  }
+}
 label {
   display: block; margin: 12px 0; font-size: 14px; color: #cbd5e1;
 }
