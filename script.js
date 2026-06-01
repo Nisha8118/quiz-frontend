@@ -44,6 +44,12 @@ const feedback = $("feedback");
 const resultScore = $("result-score");
 const resultMsg = $("result-msg");
 const restartBtn = $("restart-btn");
+const accuracyPercent = $("accuracy-percent");
+const correctCount = $("correct-count");
+const wrongCount = $("wrong-count");
+const difficultyResult = $("difficulty-result");
+const questionsTotal = $("questions-total");
+const recommendationText = $("recommendation-text");
 const questionCounter = $("question-counter");
 const difficultyBadge = $("difficulty-badge");
 const exploreBtn = $("explore-btn");
@@ -248,7 +254,6 @@ submitBtn.addEventListener("click", async () => {
     }
   });
 }
-
     setStatus(
       feedback,
       data.correct
@@ -256,7 +261,6 @@ submitBtn.addEventListener("click", async () => {
         : `❌ Wrong. Correct: ${data.correct_answer}. ${data.explanation || ""}`,
       data.correct ? "success" : "error"
     );
-
     hide(submitBtn);
     if (answered >= totalTarget) {
       nextBtn.textContent = "See Results →";
@@ -269,7 +273,6 @@ submitBtn.addEventListener("click", async () => {
     submitBtn.disabled = false;
   }
 });
-
 // ---- Next ----
 nextBtn.addEventListener("click", () => {
   if (answered >= totalTarget) {
@@ -278,17 +281,41 @@ nextBtn.addEventListener("click", () => {
     loadQuestion();
   }
 });
-
 // ---- Quit ----
 quitBtn.addEventListener("click", () => {
   if (confirm("Quit this quiz?")) finish();
 });
-
 function finish() {
   clearInterval(timer);
   hide(quizSection);
   show(resultSection);
   resultScore.textContent = `${score} / ${answered}`;
+  const pct =
+answered
+? Math.round((score / answered) * 100)
+: 0;
+accuracyPercent.textContent =
+`${pct}%`;
+correctCount.textContent =
+score;
+wrongCount.textContent =
+answered - score;
+difficultyResult.textContent =
+difficultySel.value.toUpperCase();
+questionsTotal.textContent =
+answered;
+  if (pct >= 80) {
+  recommendationText.textContent =
+  "Excellent performance. Try Hard difficulty next.";
+}
+else if (pct >= 60) {
+  recommendationText.textContent =
+  "Good work. Revise weak topics and retry.";
+}
+else {
+  recommendationText.textContent =
+  "Practice more and strengthen fundamentals.";
+}
   const pct = answered ? Math.round((score / answered) * 100) : 0;
   let msg = "";
   if (pct >= 80) msg = "🌟 Excellent work!";
@@ -297,7 +324,6 @@ function finish() {
   else msg = "📚 Keep studying — you've got this.";
   resultMsg.textContent = `${msg} (${pct}%)`;
 }
-
 // ---- Restart ----
 restartBtn.addEventListener("click", () => {
   hide(resultSection);
