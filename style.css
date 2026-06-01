@@ -114,7 +114,13 @@ button.ghost {
   padding: 12px 14px; border-radius: 10px; margin: 8px 0;
   cursor: pointer; transition: border-color .15s, background .15s;
 }
-.option:hover { border-color: #3b82f6; }
+.option:hover {
+  border-color:#3b82f6;
+  transform:translateY(-3px);
+  box-shadow:
+  0 6px 20px
+  rgba(59,130,246,.2);
+}
 .option.selected { border-color: #3b82f6; background: rgba(59,130,246,.1); }
 .option.correct { border-color: #10b981; background: rgba(16,185,129,.15); }
 .option.wrong { border-color: #ef4444; background: rgba(239,68,68,.15); }
@@ -131,13 +137,18 @@ button.ghost {
 .status.info { color: #93c5fd; }
 
 .big { font-size: 48px; font-weight: 700; text-align: center; margin: 16px 0; }
-#timer-box {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 15px;
-  color: #ff9800;
+#timer-box{
+  width:140px;
+  margin:0 auto 20px;
+  text-align:center;
+  padding:12px;
+  border-radius:15px;
+  background:rgba(255,152,0,.1);
+  border:1px solid rgba(255,152,0,.3);
+  color:#ffb74d;
+  font-size:20px;
+  font-weight:bold;
 }
-
 #text-answer {
   width: 100%;
   padding: 12px;
@@ -146,7 +157,16 @@ button.ghost {
   border: 1px solid #ccc;
   font-size: 16px;
 }
+#feedback{
 
+  margin-top:20px;
+
+  padding:15px;
+
+  border-radius:12px;
+
+  font-weight:500;
+}
 .hidden {
   display: none;
 }
