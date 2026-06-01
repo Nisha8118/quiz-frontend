@@ -11,6 +11,7 @@ let correctStreak = 0;
 let wrongStreak = 0;
 let timer = null;
 let timeLeft = 30;
+let questionTimes = [];
 let answered = 0;
 let totalTarget = 10;
 let questionType = "mixed";
@@ -125,6 +126,7 @@ timeLimit = parseInt(timerSelect.value);
   askedQuestions = [];
   score = 0;
   answered = 0;
+  questionTimes = [];
   weakQuestions = [];
 strongQuestions = [];
   totalTarget = parseInt(numQuestionsSel.value, 10);
@@ -240,6 +242,10 @@ function selectOption(key, el) {
 // ---- Submit ----
 submitBtn.addEventListener("click", async () => {
   if (!selectedAnswer) return;
+  const timeUsed =
+timeLimit - timeLeft;
+
+questionTimes.push(timeUsed);
   clearInterval(timer);
   submitBtn.disabled = true;
   try {
