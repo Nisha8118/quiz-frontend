@@ -518,6 +518,39 @@ else{
   else if (pct >= 40) msg = "🙂 Not bad — try again to improve.";
   else msg = "📚 Keep studying — you've got this.";
   resultMsg.textContent = `${msg} (${pct}%)`;
+  const history =
+JSON.parse(
+localStorage.getItem(
+"quizHistory"
+) || "[]"
+);
+
+history.unshift({
+
+subject:
+mode === "subject"
+? subjectSel.value
+: "PDF Quiz",
+
+score,
+
+answered,
+
+accuracy:pct,
+
+difficulty:
+difficultySel.value,
+
+date:
+new Date()
+.toLocaleString()
+
+});
+
+localStorage.setItem(
+"quizHistory",
+JSON.stringify(history)
+);
 }
 // ---- Restart ----
 restartBtn.addEventListener("click", () => {
