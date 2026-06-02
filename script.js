@@ -5,6 +5,7 @@ let askedQuestions = [];
 let currentQuestion = null;
 let selectedAnswer = null;
 let scoreChart = null;
+let historyChart = null;
 let score = 0;
 let weakQuestions = [];
 let strongQuestions = [];
@@ -594,3 +595,74 @@ ${item.date}
 .join("");
 }
 loadHistory();
+function drawHistoryChart(){
+const history =
+JSON.parse(
+localStorage.getItem(
+"quizHistory"
+) || "[]"
+);
+const chartData =
+history
+.slice(0,10)
+.reverse();
+const labels =
+chartData.map(
+(_,index) =>
+`Quiz ${index+1}`
+);
+const scores =
+chartData.map(
+item =>
+item.accuracy
+);
+const ctx =
+document
+.getElementById(
+"historyChart"
+)
+.getContext("2d");
+if(historyChart){
+historyChart.destroy();
+}
+historyChart =
+new Chart(ctx,{
+type:"line",
+data:{
+labels,
+datasets:[{
+label:"Accuracy %",
+data:scores,
+borderColor:"#3b82f6",
+backgroundColor:
+"rgba(59,130,246,.2)",
+fill:true,
+tension:0.3
+}]
+},
+options:{
+responsive:true,
+scales:{
+y:{
+min:0,
+max:100,
+ticks:{
+color:"#ffffff"
+}
+},
+x:{
+ticks:{
+color:"#ffffff"
+}
+}
+},
+plugins:{
+legend:{
+labels:{
+color:"#ffffff"
+}
+}
+}
+}
+});
+}
