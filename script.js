@@ -1,3 +1,5 @@
+import { signOut, onAuthStateChanged } 
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 import { auth } from "./auth.js";
 import {
   onAuthStateChanged
