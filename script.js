@@ -1,14 +1,12 @@
 import { signOut, onAuthStateChanged } 
 from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 import { auth } from "./auth.js";
-import {
-  onAuthStateChanged
-}
-from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 onAuthStateChanged(auth, (user) => {
-    if(!user){
-        window.location.href =
-        "login.html";
+    if (user) {
+        logoutBtn && (logoutBtn.style.display = "inline-block");
+        welcomeText && (welcomeText.textContent = `👤 Welcome ${user.email}`);
+    } else {
+        window.location.href = "login.html";
     }
 });
 const API_URL = "https://quiz-backend-o3ev.onrender.com";
@@ -70,6 +68,8 @@ const wrongCount = $("wrong-count");
 const difficultyResult = $("difficulty-result");
 const questionsTotal = $("questions-total");
 const recommendationText = $("recommendation-text");
+const logoutBtn = document.getElementById("logout-btn");
+const welcomeText = document.getElementById("welcome");
 const avgTime =
 $("avg-time");
 const fastestTime =
@@ -83,6 +83,10 @@ const strongTopics =$("strong-topics");
 const questionCounter = $("question-counter");
 const difficultyBadge = $("difficulty-badge");
 const exploreBtn = $("explore-btn");
+logoutBtn?.addEventListener("click", async () => {
+    await signOut(auth);
+    window.location.href = "login.html";
+});
 // ---- Helpers ----
 function setStatus(el, msg, kind = "info") {
   el.className = "status " + kind;
@@ -198,7 +202,7 @@ difficultyBadge.textContent =
 difficultySel.value.toUpperCase();
     askedQuestions.push(currentQuestion.question);
     renderQuestion();
-    timeLeft = parseInt(document.getElementById("timer-select").value);
+    timeLeft = timeLimit;
     startTimer();
   } catch (e) {
     questionText.textContent = "Failed to load question.";
@@ -330,7 +334,7 @@ else{
     if (currentQuestion.type === "mcq") {
   document.querySelectorAll(".option").forEach((o) => {
     const k = o.dataset.key;
-    if (k === data.correct_answer) {
+    if (k === (data?.correct_answer)) {
       o.classList.add("correct");
     }
     else if (k === selectedAnswer) {
