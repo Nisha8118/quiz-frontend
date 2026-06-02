@@ -483,7 +483,6 @@ else if (pct >= 40)
   msg = "🙂 Not bad — try again to improve.";
 else
   msg = "📚 Keep studying — you've got this.";
-resultMsg.textContent = `${msg} (${pct}%)`;
   const history =
 JSON.parse(
 localStorage.getItem(
