@@ -4,6 +4,7 @@ let pdfId = null;
 let askedQuestions = [];
 let currentQuestion = null;
 let selectedAnswer = null;
+let scoreChart = null;
 let score = 0;
 let weakQuestions = [];
 let strongQuestions = [];
@@ -122,7 +123,6 @@ uploadBtn.addEventListener("click", async () => {
     uploadBtn.disabled = false;
   }
 });
-
 // ---- Start Quiz ----
 startBtn.addEventListener("click", async () => {
   questionType = questionTypeSel.value;
@@ -139,19 +139,16 @@ timeLimit = parseInt(timerSelect.value);
 strongQuestions = [];
   totalTarget = parseInt(numQuestionsSel.value, 10);
   setStatus(setupStatus, "", "info");
-
   const subjectLabel = mode === "subject"
     ? (customSubj.value.trim() || subjectSel.value)
     : "PDF Quiz";
   quizTitle.textContent = `Quiz · ${subjectLabel}`;
-
   hide(setupSection);
   hide(resultSection);
   show(quizSection);
   updateScore();
   await loadQuestion();
 });
-
 // ---- Load question ----
 async function loadQuestion() {
   selectedAnswer = null;
@@ -162,7 +159,6 @@ async function loadQuestion() {
   feedback.className = "status";
   questionText.textContent = "Loading question…";
   optionsBox.innerHTML = "";
-
   const body = {
   mode,
   asked: askedQuestions,
@@ -184,10 +180,8 @@ async function loadQuestion() {
     currentQuestion = await res.json();
     questionCounter.textContent =
 `Question ${answered + 1} / ${totalTarget}`;
-
 difficultyBadge.textContent =
 difficultySel.value.toUpperCase();
-    
     askedQuestions.push(currentQuestion.question);
     renderQuestion();
     timeLeft = parseInt(document.getElementById("timer-select").value);
@@ -197,18 +191,14 @@ difficultySel.value.toUpperCase();
     setStatus(feedback, e.message, "error");
   }
 }
-
 function renderQuestion() {
   questionText.classList.remove(
   "question-animation"
 );
-
 void questionText.offsetWidth;
-
 questionText.classList.add(
   "question-animation"
 );
-
 questionText.textContent =
 currentQuestion.question;
   optionsBox.innerHTML = "";
@@ -238,7 +228,6 @@ currentQuestion.question;
     };
   }
 }
-
 function selectOption(key, el) {
   if (submitBtn.classList.contains("hidden")) return;
   selectedAnswer = key;
@@ -246,13 +235,11 @@ function selectOption(key, el) {
   el.classList.add("selected");
   submitBtn.disabled = false;
 }
-
 // ---- Submit ----
 submitBtn.addEventListener("click", async () => {
   if (!selectedAnswer) return;
   const timeUsed =
 timeLimit - timeLeft;
-
 questionTimes.push(timeUsed);
   clearInterval(timer);
   submitBtn.disabled = true;
@@ -339,21 +326,14 @@ else{
 }
     setStatus(
   feedback,
-
   data.correct
-
   ? `✅ Correct!
      ${data.explanation || ""}
-
      ${insight}`
-
   : `❌ Wrong.
      Correct: ${data.correct_answer}
-
      ${data.explanation || ""}
-
      ${insight}`,
-
   data.correct ? "success" : "error"
 );
     hide(submitBtn);
@@ -408,7 +388,6 @@ questionTimes.reduce(
 (a,b)=>a+b,
 0
 );
-
 const averageTime =
 questionTimes.length
 ? Math.round(
@@ -416,27 +395,21 @@ totalTime /
 questionTimes.length
 )
 : 0;
-
 const fastest =
 questionTimes.length
 ? Math.min(...questionTimes)
 : 0;
-
 const slowest =
 questionTimes.length
 ? Math.max(...questionTimes)
 : 0;
-
 avgTime.textContent =
 averageTime + "s";
-
 fastestTime.textContent =
 fastest + "s";
-
 slowestTime.textContent =
 slowest + "s";
   let grade = "F";
-
 if(pct >= 90){
  grade = "A+";
 }
@@ -452,10 +425,8 @@ else if(pct >= 60){
 else if(pct >= 50){
  grade = "D";
 }
-
 performanceGrade.textContent =
 grade;
-
 if(
 grade === "A+" ||
 grade === "A"
@@ -479,40 +450,30 @@ weakQuestions
 .slice(0,3)
 .map(q => `• ${q}`)
 .join("<br>");
-
 const strongPreview =
 strongQuestions
 .slice(0,3)
 .map(q => `• ${q}`)
 .join("<br>");
-
 weakTopics.innerHTML =
 `<h4>❌ Weak Areas</h4>
 ${weakPreview || "None"}`;
-
 strongTopics.innerHTML =
 `<h4>✅ Strong Areas</h4>
 ${strongPreview || "None"}`;
   if (pct >= 80){
-
   recommendationText.textContent =
   "Excellent performance. Move to HARD difficulty and advanced topics.";
-
 }
 else if (pct >= 60){
-
   recommendationText.textContent =
   "Good performance. Revise the weak areas shown above and retry.";
-
 }
 else{
-
   recommendationText.textContent =
   "Focus on the weak areas identified by AI before attempting higher difficulty questions.";
-
 }
   let msg = "";
-
 if (pct >= 80)
   msg = "🌟 Excellent work!";
 else if (pct >= 60)
@@ -521,7 +482,6 @@ else if (pct >= 40)
   msg = "🙂 Not bad — try again to improve.";
 else
   msg = "📚 Keep studying — you've got this.";
-
 resultMsg.textContent = `${msg} (${pct}%)`;
   const history =
 JSON.parse(
@@ -529,33 +489,61 @@ localStorage.getItem(
 "quizHistory"
 ) || "[]"
 );
-
 history.unshift({
-
 subject:
 mode === "subject"
 ? subjectSel.value
 : "PDF Quiz",
-
 score,
-
 answered,
-
 accuracy:pct,
-
 difficulty:
 difficultySel.value,
-
 date:
 new Date()
 .toLocaleString()
-
 });
-
 localStorage.setItem(
 "quizHistory",
 JSON.stringify(history)
 );
+  const ctx =
+document
+.getElementById("scoreChart")
+.getContext("2d");
+if(scoreChart){
+  scoreChart.destroy();
+}
+scoreChart =
+new Chart(ctx, {
+type: "pie",
+data: {
+labels: [
+"Correct",
+"Wrong"
+],
+datasets: [{
+data: [
+score,
+answered - score
+],
+backgroundColor: [
+"#10b981",
+"#ef4444"
+]
+}]
+},
+options: {
+responsive: true,
+plugins: {
+legend: {
+labels: {
+color: "#ffffff"
+}
+}
+}
+}
+});
   loadHistory();
 }
 // ---- Restart ----
@@ -569,59 +557,40 @@ exploreBtn.addEventListener("click", () => {
   });
 });
 function loadHistory(){
-
 const historyList =
 document.getElementById(
 "history-list"
 );
-
 const history =
 JSON.parse(
 localStorage.getItem(
 "quizHistory"
 ) || "[]"
 );
-
 if(history.length === 0){
-
 historyList.innerHTML =
 "No quiz attempts yet.";
-
 return;
 }
-
 historyList.innerHTML =
 history
 .slice(0,10)
 .map(item => `
-
 <div class="history-item">
-
 <strong>${item.subject}</strong>
-
 <br>
-
 Score:
 ${item.score}/${item.answered}
-
 <br>
-
 Accuracy:
 ${item.accuracy}%
-
 <br>
-
 Difficulty:
 ${item.difficulty}
-
 <br>
-
 ${item.date}
-
 </div>
-
 `)
 .join("");
-
 }
 loadHistory();
