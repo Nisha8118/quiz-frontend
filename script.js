@@ -87,7 +87,6 @@ let answered = 0;
 let totalTarget = 10;
 let questionType = "mixed";
 let timeLimit = 30;
-let autoSubmitted = false;
 
 logoutBtn?.addEventListener("click", async () => {
   try {
@@ -120,19 +119,21 @@ function updateScore() {
 
 function startTimer() {
   clearInterval(timer);
+  timer = null;
   if (timerEl) timerEl.textContent = timeLeft;
   timer = setInterval(() => {
     timeLeft--;
     if (timerEl) timerEl.textContent = timeLeft;
     if (timeLeft <= 0) {
       clearInterval(timer);
+      timer = null;
       if (submitBtn && !submitBtn.disabled) {
         submitBtn.click();
-      } else if (!autoSubmitted) {
+      } else {
         // Time ran out without a selection — count as wrong
-        autoSubmitted = true;
         autoSubmitWrong();
       }
+      return;
     }
   }, 1000);
 }
@@ -218,7 +219,7 @@ startBtn?.addEventListener("click", async () => {
 // ---- Load question ----
 async function loadQuestion() {
   selectedAnswer = null;
-  autoSubmitted = false;
+  timeLeft = timeLimit;
   if (submitBtn) submitBtn.disabled = true;
   show(submitBtn);
   hide(nextBtn);
@@ -294,7 +295,7 @@ function renderQuestion() {
 }
 
 function selectOption(key, el) {
-  if (!submitBtn || submitBtn.classList.contains("hidden")) return;
+  if (!submitBtn || submitBtn.disabled) return;
   selectedAnswer = key;
   document.querySelectorAll(".option").forEach((o) => o.classList.remove("selected"));
   el.classList.add("selected");
@@ -303,7 +304,7 @@ function selectOption(key, el) {
 
 // ---- Submit ----
 submitBtn?.addEventListener("click", async () => {
-  if (!selectedAnswer) return;
+  if (!selectedAnswer || !currentQuestion) return;
   const timeUsed = timeLimit - timeLeft;
   questionTimes.push(timeUsed);
   clearInterval(timer);
@@ -393,7 +394,9 @@ quitBtn?.addEventListener("click", () => {
 });
 
 function finish() {
+  if (!answered) { hide(quizSection); show(setupSection); return; }
   clearInterval(timer);
+  timer = null;
   hide(quizSection);
   show(resultSection);
 
