@@ -561,6 +561,8 @@ button.ghost {
   #10b981,
   #3b82f6
   );
+  transition:1s;
+}
 #history-list{
 
   display:flex;
