@@ -2,110 +2,83 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Adaptive AI Quiz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Chart.js for charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Main styles -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- HERO + NAVBAR -->
   <header class="hero">
-  <nav class="navbar">
-    <div class="logo">
-      🤖 Adaptive AI Quiz
+    <nav class="navbar">
+      <div class="logo">🤖 Adaptive AI Quiz</div>
+      <div class="nav-links">
+        <a href="#features">Home</a>
+        <a href="#features">Features</a>
+        <a href="#history-section">History</a>
+        <button id="logout-btn" class="ghost" style="display:none;">Logout</button>
+      </div>
+    </nav>
+
+    <div class="hero-content">
+      <h1 id="quiz-title">Learn Smarter with AI</h1>
+      <p id="welcome">Generate intelligent quizzes from subjects or PDFs. Track performance, improve knowledge, and learn adaptively.</p>
+      <button id="explore-btn">Start Learning →</button>
     </div>
-    <div class="nav-links">
-  <a href="#">Home</a>
-  <a href="#">Features</a>
-  <a href="#">About</a>
-  <button id="logout-btn" style="display:none; margin-left:10px;">
-    Logout
-  </button>
-</div>
-  </nav>
-  <div class="hero-content">
-    <h1>
-      Learn Smarter with AI
-    </h1>
-    <p>
-      Generate intelligent quizzes from subjects or PDFs.
-      Track performance, improve knowledge, and learn adaptively.
-    </p>
-    <button id="explore-btn">
-      Start Learning →
-    </button>
-  </div>
-</header>
+
+    <!-- STATS STRIP -->
+    <main>
+      <section class="stats-section">
+        <div class="stat-card">
+          <h3>20+</h3>
+          <p>Subjects</p>
+        </div>
+        <div class="stat-card">
+          <h3>5</h3>
+          <p>Question Types</p>
+        </div>
+        <div class="stat-card">
+          <h3>AI</h3>
+          <p>Powered by Gemini</p>
+        </div>
+        <div class="stat-card">
+          <h3>Smart</h3>
+          <p>Adaptive Learning</p>
+        </div>
+      </section>
+    </main>
+  </header>
+
   <main>
-    <section class="stats-section">
+    <!-- FEATURES -->
+    <section id="features" class="card features-section">
+      <h2>🚀 Platform Features</h2>
+      <div class="feature-grid">
+        <div class="feature-item">🤖 AI Generated Questions</div>
+        <div class="feature-item">📄 PDF Based Assessment</div>
+        <div class="feature-item">🧠 Adaptive Learning</div>
+        <div class="feature-item">⚡ Instant Feedback</div>
+        <div class="feature-item">🎯 Multiple Question Types</div>
+        <div class="feature-item">📊 Performance Tracking</div>
+      </div>
+    </section>
 
-  <div class="stat-card">
-    <h3>20+</h3>
-    <p>Subjects</p>
-  </div>
-
-  <div class="stat-card">
-    <h3>5</h3>
-    <p>Question Types</p>
-  </div>
-
-  <div class="stat-card">
-    <h3>AI</h3>
-    <p>Powered by Gemini</p>
-  </div>
-
-  <div class="stat-card">
-    <h3>Smart</h3>
-    <p>Adaptive Learning</p>
-  </div>
-
-</section>
-    <!-- Setup -->
-    <section class="features-section card">
-
-  <h2>🚀 Platform Features</h2>
-
-  <div class="feature-grid">
-
-    <div class="feature-item">
-      🤖 AI Generated Questions
-    </div>
-
-    <div class="feature-item">
-      📄 PDF Based Assessment
-    </div>
-
-    <div class="feature-item">
-      🧠 Adaptive Learning
-    </div>
-
-    <div class="feature-item">
-      ⚡ Instant Feedback
-    </div>
-
-    <div class="feature-item">
-      🎯 Multiple Question Types
-    </div>
-
-    <div class="feature-item">
-      📊 Performance Tracking
-    </div>
-
-  </div>
-
-</section>
+    <!-- SETUP SECTION -->
     <section id="setup-section" class="card">
-      <h2 style="text-align:center;">
-🎯 Create Your Quiz
-</h2>
-      <h2>1. Choose your quiz</h2>
+      <h2>🎯 Create Your Quiz</h2>
 
       <div class="tabs">
         <button class="tab active" data-mode="subject">📚 By Subject</button>
         <button class="tab" data-mode="pdf">📄 From PDF</button>
       </div>
 
-      <!-- Subject mode -->
-      <div id="subject-pane" class="pane">
-        <label>Subject
+      <div id="subject-pane">
+        <label>
+          Subject
           <select id="subject">
             <option>Mathematics</option>
             <option>Physics</option>
@@ -130,29 +103,43 @@
           </select>
         </label>
 
-        <label for="question-type">Question Type:</label>
-        <select id="question-type">
-        <option value="mixed">Mixed</option>
-        <option value="mcq">MCQ</option>
-        <option value="fill_blank">Fill in the Blank</option>
-        <option value="one_word">One Word Answer</option>
-        <option value="analogy">Analogy</option>
-        </select>
+        <!-- Optional custom subject (script safely handles missing element) -->
+        <!-- <label>
+          Custom subject (optional)
+          <input type="text" id="custom-subject" placeholder="e.g. DBMS Unit 3" />
+        </label> -->
 
-        <label>Difficulty
+        <label>
+          Question Type:
+          <select id="question-type">
+            <option value="mixed">Mixed</option>
+            <option value="mcq">MCQ</option>
+            <option value="fill_blank">Fill in the Blank</option>
+            <option value="one_word">One Word Answer</option>
+            <option value="analogy">Analogy</option>
+          </select>
+        </label>
+
+        <label>
+          Difficulty
           <select id="difficulty">
             <option value="easy">Easy</option>
             <option value="medium" selected>Medium</option>
             <option value="hard">Hard</option>
           </select>
         </label>
-        <label for="timer-select">Time per question:</label>
-        <select id="timer-select">
-        <option value="5">5 seconds</option>
-        <option value="10">10 seconds</option>
-        <option value="30" selected>30 seconds</option>
-        </select>
-        <label>Number of questions
+
+        <label>
+          Time per question:
+          <select id="timer-select">
+            <option value="5">5 seconds</option>
+            <option value="10">10 seconds</option>
+            <option value="30" selected>30 seconds</option>
+          </select>
+        </label>
+
+        <label>
+          Number of questions
           <select id="num-questions">
             <option value="5">5</option>
             <option value="10" selected>10</option>
@@ -161,174 +148,143 @@
           </select>
         </label>
       </div>
-      
-      <!-- PDF mode -->
-      <div id="pdf-pane" class="pane hidden">
-        <label>Upload a PDF
-          <input type="file" id="pdf-file" accept="application/pdf" />
+
+      <div id="pdf-pane" class="hidden">
+        <label>
+          Upload a PDF
+          <input type="file" id="pdf-file" accept="application/pdf">
         </label>
-        <button id="upload-btn" class="ghost">Upload PDF</button>
-        <p id="upload-status" class="status"></p>
+        <button id="upload-btn">Upload PDF</button>
+        <div id="upload-status" class="status info"></div>
       </div>
 
-      <button id="start-btn">Start Quiz →</button>
-      <p id="setup-status" class="status"></p>
+      <div class="actions">
+        <button id="start-btn">Start Quiz →</button>
+      </div>
+      <div id="setup-status" class="status"></div>
     </section>
 
-    <!-- Quiz -->
+    <!-- QUIZ SECTION -->
     <section id="quiz-section" class="card hidden">
       <div class="quiz-meta">
-
-  <div id="question-counter">
-    Question 1 / 10
-  </div>
-
-  <div id="difficulty-badge">
-    Medium
-  </div>
-<div id="adaptive-status">
-
-  AI Adaptive Mode
-
-</div>
-</div>
-      <div class="row">
-        <h2 id="quiz-title">Quiz</h2>
-        <span id="score-pill" class="pill">Score: 0 / 0</span>
+        <div id="question-counter">Question 1 / 10</div>
+        <div id="difficulty-badge">MEDIUM</div>
       </div>
-      <div class="progress"><div id="progress-bar"></div></div>
-      <div id="question-box">
-  <div id="timer-box">
-    ⏳ Time Left: <span id="timer">30</span>s
-  </div>
-  <p id="question-text">Loading…</p>
-  <div id="options"></div>
-  <input
-    type="text"
-    id="text-answer"
-    class="hidden"
-    placeholder="Type your answer here..."
-  />
-</div>
+
+      <div class="row">
+        <div id="score-pill" class="pill">Score: 0 / 0</div>
+        <div id="timer-box">
+          ⏳ Time Left: <span id="timer">30</span> s
+        </div>
+      </div>
+
+      <div class="progress">
+        <div id="progress-bar"></div>
+      </div>
+
+      <h3 id="question-text">Loading…</h3>
+
+      <div id="options"></div>
+      <input type="text" id="text-answer" class="hidden" placeholder="Type your answer here..." />
 
       <div class="actions">
         <button id="submit-btn" disabled>Submit Answer</button>
-        <button id="next-btn" class="hidden">Next Question</button>
+        <button id="next-btn" class="ghost hidden">Next Question</button>
         <button id="quit-btn" class="ghost">Quit</button>
       </div>
-      <p id="feedback" class="status"></p>
+
+      <div id="feedback" class="status"></div>
     </section>
 
-    <!-- Results -->
-    <section id="result-section" class="card hidden">
+    <!-- RESULT SECTION -->
+    <section id="result-section" class="card hidden analytics-card">
+      <h2>📊 Performance Report</h2>
 
-  <h2>📊 Performance Report</h2>
-
-  <div class="analytics-card">
-
-    <div class="accuracy-circle">
-      <span id="accuracy-percent">0%</span>
-    </div>
-<div class="accuracy-progress">
-
-<div id="accuracy-fill"></div>
-
-</div>
-    <h3 id="result-score"></h3>
-
-    <div class="analytics-grid">
-<div class="analytic-box">
-  <h4>Average Time</h4>
-  <p id="avg-time">0s</p>
-</div>
-
-<div class="analytic-box">
-  <h4>Fastest</h4>
-  <p id="fastest-time">0s</p>
-</div>
-
-<div class="analytic-box">
-  <h4>Slowest</h4>
-  <p id="slowest-time">0s</p>
-</div>
-
-<div class="analytic-box">
-  <h4>Grade</h4>
-  <p id="performance-grade">A</p>
-</div>
-      <div class="analytic-box">
-        <h4>Correct</h4>
-        <p id="correct-count">0</p>
+      <div class="accuracy-circle">
+        <span id="accuracy-percent">0%</span>
       </div>
 
-      <div class="analytic-box">
-        <h4>Wrong</h4>
-        <p id="wrong-count">0</p>
+      <p id="result-score" class="big">0 / 0</p>
+      <p id="result-msg">Grade summary will appear here.</p>
+
+      <div class="accuracy-progress">
+        <div id="accuracy-fill"></div>
       </div>
 
-      <div class="analytic-box">
-        <h4>Difficulty</h4>
-        <p id="difficulty-result">Medium</p>
+      <div class="analytics-grid">
+        <div class="analytic-box">
+          <h4>Average Time</h4>
+          <p id="avg-time">0s</p>
+        </div>
+        <div class="analytic-box">
+          <h4>Fastest</h4>
+          <p id="fastest-time">0s</p>
+        </div>
+        <div class="analytic-box">
+          <h4>Slowest</h4>
+          <p id="slowest-time">0s</p>
+        </div>
+        <div class="analytic-box">
+          <h4>Grade</h4>
+          <p id="performance-grade">A</p>
+        </div>
+        <div class="analytic-box">
+          <h4>Correct</h4>
+          <p id="correct-count">0</p>
+        </div>
+        <div class="analytic-box">
+          <h4>Wrong</h4>
+          <p id="wrong-count">0</p>
+        </div>
+        <div class="analytic-box">
+          <h4>Difficulty</h4>
+          <p id="difficulty-result">Medium</p>
+        </div>
+        <div class="analytic-box">
+          <h4>Questions</h4>
+          <p id="questions-total">0</p>
+        </div>
       </div>
 
-      <div class="analytic-box">
-        <h4>Questions</h4>
-        <p id="questions-total">0</p>
+      <div class="topic-analysis">
+        <div id="weak-topics">
+          <h3>🧠 AI Learning Analysis</h3>
+        </div>
+        <div id="strong-topics"></div>
       </div>
 
-    </div>
-<div class="topic-analysis">
+      <div class="chart-container">
+        <h3>📊 Performance Chart</h3>
+        <canvas id="scoreChart"></canvas>
+      </div>
 
-  <h3>🧠 AI Learning Analysis</h3>
+      <div class="chart-container">
+        <h3>📈 Learning Progress</h3>
+        <canvas id="historyChart"></canvas>
+      </div>
 
-  <div id="weak-topics"></div>
+      <div class="recommendation">
+        <h3>🎯 Recommendation</h3>
+        <p id="recommendation-text">Take Another Quiz</p>
+      </div>
 
-  <div id="strong-topics"></div>
+      <div class="actions">
+        <button id="restart-btn">Take Another Quiz</button>
+      </div>
+    </section>
 
-</div>
-    <div class="chart-container">
-
-  <h3>📊 Performance Chart</h3>
-
-  <canvas id="scoreChart"></canvas>
-
-</div>
-    <div class="chart-container">
-
-  <h3>📈 Learning Progress</h3>
-
-  <canvas id="historyChart"></canvas>
-
-</div>
-    <div class="recommendation">
-      <h3>🎯 Recommendation</h3>
-      <p id="recommendation-text"></p>
-    </div>
-
-  </div>
-
-  <button id="restart-btn">
-    Take Another Quiz
-  </button>
-
-</section>
+    <!-- HISTORY SECTION -->
+    <section id="history-section" class="card">
+      <h2>📚 Quiz History</h2>
+      <div id="history-list">No quiz attempts yet.</div>
+    </section>
   </main>
-<section id="history-section" class="card">
 
-  <h2>📚 Quiz History</h2>
-
-  <div id="history-list">
-
-    No quiz attempts yet.
-
-  </div>
-
-</section>
   <footer>
-    <p class="muted">Powered by Google Gemini · Free tier</p>
+    Powered by Google Gemini · Free tier
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="script.js"></script>
+  <!-- Main script as ES module so imports work -->
+  <script type="module" src="script.js"></script>
 </body>
 </html>
