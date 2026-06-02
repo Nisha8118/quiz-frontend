@@ -546,6 +546,7 @@ color: "#ffffff"
 }
 });
   loadHistory();
+  drawHistoryChart();
 }
 // ---- Restart ----
 restartBtn.addEventListener("click", () => {
@@ -595,6 +596,7 @@ ${item.date}
 .join("");
 }
 loadHistory();
+drawHistoryChart();
 function drawHistoryChart(){
 const history =
 JSON.parse(
@@ -616,12 +618,13 @@ chartData.map(
 item =>
 item.accuracy
 );
-const ctx =
-document
-.getElementById(
+const canvas =
+document.getElementById(
 "historyChart"
-)
-.getContext("2d");
+);
+if(!canvas) return;
+const ctx =
+canvas.getContext("2d");
 if(historyChart){
 historyChart.destroy();
 }
