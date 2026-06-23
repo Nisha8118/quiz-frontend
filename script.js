@@ -53,6 +53,7 @@ const strongTopics = $("strong-topics");
 const questionCounter = $("question-counter");
 const difficultyBadge = $("difficulty-badge");
 const exploreBtn = $("explore-btn");
+const adaptiveStatus = $("adaptive-status"); // ADDED DOM REF
 
 // ---- Auth gate ----
 onAuthStateChanged(auth, (user) => {
@@ -248,6 +249,12 @@ async function loadQuestion() {
   selectedAnswer = null;
   timeLeft = timeLimit;
 
+  // RESET ADAPTIVE NOTIFICATION CONTAINER
+  if (adaptiveStatus) {
+    adaptiveStatus.textContent = "";
+    adaptiveStatus.classList.add("hidden");
+  }
+
   if (submitBtn) {
     submitBtn.disabled = true;
     show(submitBtn);
@@ -423,8 +430,10 @@ submitBtn?.addEventListener("click", async () => {
       data.correct ? "success" : "error"
     );
 
-    if (difficultyNote) {
-      appendStatus(feedback, difficultyNote, data.correct ? "success" : "info");
+    // PRESENT LEVEL UP/DOWN NOTICE TO DEDICATED BANNER
+    if (difficultyNote && adaptiveStatus) {
+      adaptiveStatus.textContent = difficultyNote;
+      adaptiveStatus.classList.remove("hidden");
     }
 
     hide(submitBtn);
