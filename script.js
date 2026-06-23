@@ -506,17 +506,27 @@ function finish() {
     else performanceGrade.style.color = "#ef4444";
   }
 
-  const weakPreview = weakQuestions.slice(0, 3).map(q => `• ${q}`).join("  \n");
-  const strongPreview = strongQuestions.slice(0, 3).map(q => `• ${q}`).join("  \n");
+  const weakPreview = weakQuestions.slice(0, 3).map(q => `<li>${q}</li>`).join("");
+  const strongPreview = strongQuestions.slice(0, 3).map(q => `<li>${q}</li>`).join("");
 
-  if (weakTopics) weakTopics.innerHTML = `
-#### ❌ Weak Areas
-
-${weakPreview || "None"}`;
-  if (strongTopics) strongTopics.innerHTML = `
-#### ✅ Strong Areas
-
-${strongPreview || "None"}`;
+  if (weakTopics) {
+    weakTopics.innerHTML = `
+      <h3>🧠 AI Learning Analysis</h3>
+      <h4 style="color: #f87171; margin-top: 10px;">❌ Incorrectly Answered Questions</h4>
+      <ul style="text-align: left; padding-left: 20px; color: #cbd5e1; font-size: 14px; line-height: 1.6;">
+        ${weakPreview || "<li>None</li>"}
+      </ul>
+    `;
+  }
+  
+  if (strongTopics) {
+    strongTopics.innerHTML = `
+      <h4 style="color: #34d399; margin-top: 20px;">✅ Correctly Answered Questions</h4>
+      <ul style="text-align: left; padding-left: 20px; color: #cbd5e1; font-size: 14px; line-height: 1.6;">
+        ${strongPreview || "<li>None</li>"}
+      </ul>
+    `;
+  }
 
   if (recommendationText) {
     if (pct >= 80)
