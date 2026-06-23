@@ -5,14 +5,11 @@
   <title>Adaptive AI Quiz</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Chart.js for charts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Main styles -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- HERO + NAVBAR -->
   <header class="hero">
     <nav class="navbar">
       <div class="logo">🤖 Adaptive AI Quiz</div>
@@ -30,7 +27,6 @@
       <button id="explore-btn">Start Learning →</button>
     </div>
 
-    <!-- STATS STRIP -->
     <main>
       <section class="stats-section">
         <div class="stat-card">
@@ -54,7 +50,6 @@
   </header>
 
   <main>
-    <!-- FEATURES -->
     <section id="features" class="card features-section">
       <h2>🚀 Platform Features</h2>
       <div class="feature-grid">
@@ -67,7 +62,6 @@
       </div>
     </section>
 
-    <!-- SETUP SECTION -->
     <section id="setup-section" class="card">
       <h2>🎯 Create Your Quiz</h2>
 
@@ -102,12 +96,6 @@
             <option>General Knowledge</option>
           </select>
         </label>
-
-        <!-- Optional custom subject (script safely handles missing element) -->
-        <!-- <label>
-          Custom subject (optional)
-          <input type="text" id="custom-subject" placeholder="e.g. DBMS Unit 3" />
-        </label> -->
 
         <label>
           Question Type:
@@ -164,7 +152,6 @@
       <div id="setup-status" class="status"></div>
     </section>
 
-    <!-- QUIZ SECTION -->
     <section id="quiz-section" class="card hidden">
       <div class="quiz-meta">
         <div id="question-counter">Question 1 / 10</div>
@@ -182,6 +169,8 @@
         <div id="progress-bar"></div>
       </div>
 
+      <div id="adaptive-status" class="hidden"></div>
+
       <h3 id="question-text">Loading…</h3>
 
       <div id="options"></div>
@@ -196,7 +185,6 @@
       <div id="feedback" class="status"></div>
     </section>
 
-    <!-- RESULT SECTION -->
     <section id="result-section" class="card hidden analytics-card">
       <h2>📊 Performance Report</h2>
 
@@ -273,7 +261,6 @@
       </div>
     </section>
 
-    <!-- HISTORY SECTION -->
     <section id="history-section" class="card">
       <h2>📚 Quiz History</h2>
       <div id="history-list">No quiz attempts yet.</div>
@@ -284,7 +271,6 @@
     Powered by Google Gemini · Free tier
   </footer>
 
-  <!-- Main script as ES module so imports work -->
   <script type="module" src="script.js"></script>
 </body>
 </html>
